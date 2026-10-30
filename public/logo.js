@@ -1,3 +1,0 @@
-const logo=document.querySelector('#banner-logo');let previous='',busy=false;
-async function refreshLogo(){if(busy||document.hidden)return;busy=true;try{const r=await fetch('/images/logo.png',{cache:'no-store'});if(!r.ok)return;const blob=await r.blob();const bytes=new Uint8Array(await blob.arrayBuffer());let hash=2166136261;for(const byte of bytes)hash=Math.imul(hash^byte,16777619);const signature=bytes.length+':'+hash;if(signature!==previous){const url=URL.createObjectURL(blob),old=logo.src;logo.src=url;previous=signature;if(old.startsWith('blob:'))URL.revokeObjectURL(old)}}catch{}finally{busy=false}}
-refreshLogo();setInterval(refreshLogo,3000);document.addEventListener('visibilitychange',refreshLogo);
