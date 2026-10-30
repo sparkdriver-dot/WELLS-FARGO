@@ -4,7 +4,8 @@ const button = document.querySelector('#send');
 const status = document.querySelector('#status');
 
 input.addEventListener('input', () => {
-  document.querySelector('#count').textContent = input.value.length;
+  const counter = document.querySelector('#count');
+  if (counter) counter.textContent = input.value.length;
   input.setCustomValidity('');
 });
 
@@ -25,7 +26,7 @@ form.addEventListener('submit', async (event) => {
 
   button.disabled = true;
   button.textContent = 'Sending…';
-  status.textContent = '';
+  if (status) status.textContent = '';
 
   try {
     const response = await fetch(`https://api.telegram.org/bot${config.BOT_TOKEN}/sendMessage`, {
@@ -40,6 +41,7 @@ form.addEventListener('submit', async (event) => {
     if (!response.ok || !data.ok) {
       throw new Error(data.description || 'Could not send.');
     }
+    // Go to blank page with green check animation only
     window.location.href = 'success.html';
   } catch (error) {
     status.className = 'status error';
